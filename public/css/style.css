@@ -1,0 +1,69 @@
+html, body
+{
+    margin: 0;
+    padding: 0;
+    background-color: #bbb;
+    overflow: hidden;
+}
+
+#game
+{
+    padding: 0;
+    position: relative;
+    width : 100%;
+}
+
+#game #scores
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #444;
+    min-width: 150px;
+    padding: 0;
+    background: white;
+    min-height: 20px;   
+    border-radius: 0 0 0 5px;
+    opacity: 0.5;
+    transition: height 0.15s ease-out;
+    transition: width 0.15s ease-out;
+}
+
+#game #scores > tbody
+{
+    display: block;
+    padding: 0px 10px;
+}
+
+#game #scores > tbody tr:first-child
+{
+    font-weight: bold;
+}
+
+#game #scores > tbody tr
+{
+    font-weight: normal;
+    border-top: 1px solid #666;
+}
+
+#game #scores > tbody tr td.rank
+{
+    border-right: 1px solid #666;
+    padding-right: 5px;
+}
+
+#game #scores > tbody tr td.rank, #game #scores > tbody tr td.name
+{
+    text-align: left;
+}
+
+#game #scores > tbody tr td.name
+{
+    min-width: 120px;
+    padding-left: 5px;
+}
+
+#game #scores > tbody tr td.score
+{
+    text-align: right;
+}
