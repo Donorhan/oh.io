@@ -1,5 +1,7 @@
 Make combos to be the best.
 
+![alt tag](http://i.imgur.com/CzWGIij.png)
+
 CONTENTS OF THIS FILE
 ---------------------
 
