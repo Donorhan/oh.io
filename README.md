@@ -33,7 +33,7 @@ INSTALLATION
 ARCHITECTURE
 ---
 ### Server
-The server side is made with [Express.js](http://expressjs.com/fr/), [Socket.io](https://github.com/socketio/socket.io) and [Nunjucks](https://mozilla.github.io/nunjucks/]. 
+The server side is made with [Express.js](http://expressjs.com/fr/), [Socket.io](https://github.com/socketio/socket.io) and [Nunjucks](https://mozilla.github.io/nunjucks/) . 
 
 ### Client
 The client use [Socket.io](https://github.com/socketio/socket.io) and [Pixi.js](https://github.com/pixijs/pixi.js)
