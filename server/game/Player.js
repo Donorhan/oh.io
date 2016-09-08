@@ -30,7 +30,7 @@ class Player
         this.score = 0;
 
         /**
-         * Score
+         * Last action
          *
          * @type {number}
          */

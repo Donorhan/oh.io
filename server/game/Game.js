@@ -26,10 +26,7 @@ class Game
         /**
          * Players
          *
-         * Key   : Unique socket identifier
-         * Value : A player instance
-         *
-         * @type {Array.<string, Player>}
+         * @type {Array.<Player>}
          */
         this.players = [];
 
@@ -39,16 +36,6 @@ class Game
          * @type {IO}
          */
         this.io = null;
-
-        /**
-         * Players
-         *
-         * Key   : Unique socket identifier
-         * Value : A player instance
-         *
-         * @type {Array.<string, Player>}
-         */
-        this.players = [];
 
         /**
          * Waiting actions
@@ -261,8 +248,9 @@ class Game
      *
      * @param {array} updates Array of updates to fill with new events
      * @param {number} lastBallIndex Old index of the ball concerned by the current action
-     * @param {number} player Id of player doing the action
+     * @param {string} player Id of player doing the action
      * @param {bool} startFromLastAction True to check combo from the last action
+     * @private
      */
     searchCombos (updates, lastBallIndex, player, startFromLastAction = true)
     {
@@ -285,22 +273,7 @@ class Game
 
             // 2 - Save elements to change
             if (combo >= Config.game.minCombo)
-            {
-                // Convert elements to events
-                for (let i = this.level.balls.length - 1; i > this.level.balls.length - (1 + combo); i--)
-                {
-                    let updatedBall = this.level.updateBall(this.level.balls[i].id, Config.game.ballTypes.Grey, last.owner);
-                    if (updatedBall)
-                        updates.push({'action': Config.game.events.UpdateBall, 'ball': updatedBall});
-                }
-
-                // Add a point to the player
-                let index = this.findPlayerIndex(player);
-                if (index <= -1)
-                    return;
-
-                this.players[index].score += 1;
-            }
+                this.updateBallsAndPlayerScore (updates, this.level.balls.length - combo, this.level.balls.length, last.owner);
         }
         // The last action was probably for removing a ball, so we should look neighbors to avoid processing all the level
         else
@@ -340,23 +313,35 @@ class Game
             let combo = (maxIndex - minIndex) + 1;
             let owner = this.level.balls[minIndex].owner;
             if (combo >= Config.game.minCombo)
-            {
-                // Convert elements to events
-                for (let i = minIndex; i < minIndex + combo; i++)
-                {
-                    let updatedBall = this.level.updateBall(this.level.balls[i].id, Config.game.ballTypes.Grey, owner);
-                    if (updatedBall)
-                        updates.push({'action': Config.game.events.UpdateBall, 'ball': updatedBall});
-                }
-
-                // Add a point to the player
-                let index = this.findPlayerIndex(player);
-                if (index <= -1)
-                    return;
-
-                this.players[index].score += 1;
-            }
+                this.updateBallsAndPlayerScore (updates, minIndex, minIndex + combo, player);
         }
+    }
+
+    /**
+     * Fill array of actions with updated balls
+     *
+     * @param {Array.<Object>} updates 
+     * @param {number} min Minimum index
+     * @param {number} max Maximum index
+     * @param {string} player Player identifier
+     * @private
+     */
+    updateBallsAndPlayerScore (updates, min, max, player)
+    {
+        // Convert elements to events
+        for (let i = min; i < max; i++)
+        {
+            let updatedBall = this.level.updateBall(this.level.balls[i].id, Config.game.ballTypes.Grey, player);
+            if (updatedBall)
+                updates.push({'action': Config.game.events.UpdateBall, 'ball': updatedBall});
+        }
+
+        // Add a point to the player
+        let index = this.findPlayerIndex(player);
+        if (index <= -1)
+            return;
+
+        this.players[index].score += 1;
     }
 }
 

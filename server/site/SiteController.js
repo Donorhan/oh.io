@@ -3,8 +3,8 @@ class SiteController
     /**
      * Show homepage
      *
-     * @param {HTTPRequest} A request object
-     * @param {HTTPResponse} A response object
+     * @param {HTTPRequest} req A request object
+     * @param {HTTPResponse} res A response object
      * @return {string} A HTML formatted view
      */
     home (req, res)

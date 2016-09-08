@@ -51,7 +51,7 @@ class Level
      * @param {number} id Identifier
      * @param {number} type Type
      * @param {number} owner Owner
-     * @return {Ball} The ball updated
+     * @return {Ball|null} The ball updated
      */
     updateBall (id, type, owner)
     {

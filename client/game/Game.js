@@ -40,7 +40,6 @@ class Game
          */
         this.gameInterface = new GameInterface();
 
-
         /**
          * Interface with scores
          *
