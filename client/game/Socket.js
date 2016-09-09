@@ -1,3 +1,5 @@
+import * as Config from '../../config.js';
+
 export class Socket
 {
     /**
@@ -10,7 +12,7 @@ export class Socket
          * 
          * @type {Socket}
          */
-        this.socket = io.connect('http://localhost:8080');
+        this.socket = io.connect(Config.host + ':' + Config.socket.port);
     }
 
     /**

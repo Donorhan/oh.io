@@ -1,4 +1,5 @@
 import {Ball} from './Ball.js';
+import {Camera} from './Camera.js';
 import {Renderer} from './Renderer.js';
 import {Socket} from './Socket.js';
 import {GameInterface} from './GameInterface.js';
@@ -25,6 +26,13 @@ class Game
          * @type {Array.<Object>}
          */
         this.balls = [];
+
+        /**
+         * Camera
+         *
+         * @type {Camera}
+         */
+        this.camera = new Camera();
 
         /**
          * The renderer
@@ -69,7 +77,7 @@ class Game
         this.renderer.addChild(this.gameInterface.getContainer(), 'gui');
 
         // Prepare origin
-        this.ballOrigin = {x: 100, y: this.renderer.getSize().y / 2.0};
+        this.ballOrigin = {x: 0, y: this.renderer.getSize().y / 2.0};
 
         // Start listening the server
         Socket.getInstance().on('level_load', this.loadLevel.bind(this));
@@ -87,7 +95,7 @@ class Game
     addBall (data, animate = true)
     {
         let ball = new Ball(data.id, data.type, this.onBallClicked.bind(this));
-        ball.setPosition(this.ballOrigin.x + (this.balls.length * Ball.padding) + (animate ? 300 : 0), this.ballOrigin.y, !animate);
+        ball.setPosition(this.ballOrigin.x + ((this.balls.length + 1) * Ball.padding) + (animate ? 300 : 0), this.ballOrigin.y, !animate);
         this.balls.push(ball);
         this.renderer.addChild(ball.sprite);
     }
@@ -176,6 +184,17 @@ class Game
     }
 
     /**
+     * Call on a mouse wheel event
+     *
+     * @type {object} event Mouse wheel's event
+     */
+    onMouseWheel (event)
+    {
+        let direction = (event.detail < 0 || event.wheelDelta > 0) ? -1 : 1;
+        this.camera.applyZoom(direction / 10.0);
+    }
+
+    /**
      * Remove a ball
      *
      * @type {number} id Ball's identifier
@@ -215,9 +234,15 @@ class Game
         // Logic update
         for (let i = 0; i < this.balls.length; i++)
         {
-            this.balls[i].setTargetedPosition(this.ballOrigin.x + (i * Ball.padding), this.ballOrigin.y);
+            this.balls[i].setTargetedPosition(this.ballOrigin.x + ((i + 1) * Ball.padding), this.ballOrigin.y);
             this.balls[i].update();
         }
+
+        // Update camera
+        let lastBallPosition = this.balls.length * Ball.padding;
+        this.camera.setPosition(this.renderer.getSize().x / 2.0 - lastBallPosition, 0);
+        this.camera.update();
+        this.renderer.applyCamera(this.camera);
 
         // Draw
         this.gameInterface.updateText (this.playerLastAction);
@@ -230,7 +255,14 @@ class Game
  */
 document.addEventListener('DOMContentLoaded', (event) => 
 {
+    // Init game instance
     let game = new Game();
     game.init();
     game.update();
+
+    /**
+     * Mouse wheel
+     */
+    document.addEventListener('DOMMouseScroll', game.onMouseWheel.bind(game), false); // Firefox
+    document.addEventListener('mousewheel', game.onMouseWheel.bind(game), false); // Everyone else
 });

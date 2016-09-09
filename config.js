@@ -1,6 +1,7 @@
 let config = {};
 
 // Common
+config.host                             = 'http://localhost';
 config.port                             = 3000;
 
 // Socket

@@ -12,7 +12,7 @@ CONTENTS OF THIS FILE
 CONFIGURATION
 ------------
 
-A configuration file (config.js) is available from the root folder, feel free to change values.
+A configuration file (config.js) is available from the root folder, feel free to change values like the host. 
 
 INSTALLATION
 ------------

@@ -124,11 +124,10 @@ export class Ball
         // Compute difference target <-> ball
         let diffX = this.targetedPosition.x - this.position.x;
         let diffY = this.targetedPosition.y - this.position.y;
-        let easingAmount = 0.05;
 
         // Update his view
-        this.position.x += diffX * easingAmount;
-        this.position.y += diffY * easingAmount;
+        this.position.x += diffX * Ball.speed;
+        this.position.y += diffY * Ball.speed;
         this.sprite.x = this.position.x;
         this.sprite.y = this.position.y;
     }
@@ -140,6 +139,13 @@ export class Ball
  * @type {PIXI.Container}
  */
 Ball.container = null;
+
+/**
+ * Movement speed
+ *
+ * @type {number}
+ */
+Ball.speed = 0.05;
 
 /**
  * Padding between balls

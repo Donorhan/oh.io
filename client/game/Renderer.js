@@ -89,15 +89,20 @@ export class Renderer
     }
 
     /**
-     * Translate a container
+     * Apply a camera on a container
      *
-     * @param {number} x Position on x
-     * @param {number} y Position on y
+     * @param {Camera} camera A camera intance
+     * @param {string} containerName Name of the container to use
      */
-    translateContainer (x, y)
+    applyCamera (camera, containerName = 'game')
     {   
-        this.containers[containerName].x += x;
-        this.containers[containerName].y += y;
+        let position = camera.getPosition();
+        this.containers[containerName].x = position.x;
+        this.containers[containerName].y = position.y;
+
+        let zoom = camera.getZoom();
+        this.containers[containerName].scale.x = zoom;
+        this.containers[containerName].scale.y = zoom;
     }
 
     /**
